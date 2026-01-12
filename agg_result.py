@@ -1,7 +1,12 @@
 from pathlib import Path
 import json
+import argparse
 
-base_dir = Path("evaluation_results/Qwen3-Embedding-0.6B")
+parser = argparse.ArgumentParser()
+parser.add_argument("--model_name", type=str, required=True, help="Name of the model to aggregate results for")
+args = parser.parse_args()
+
+base_dir = Path(f"evaluation_results/{args.model_name}")
 model_name = base_dir.name
 adict = {}
 

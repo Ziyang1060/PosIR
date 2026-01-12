@@ -1,8 +1,24 @@
 # PosIR: Position-Aware Heterogeneous Information Retrieval Benchmark
 
+> A large-scale heterogeneous benchmark for diagnosing position bias in retrieval models.
+
+# Overview
+
+## 🔑 Key Features
+
+- 🎯 **Position-aware relevance** with span-level grounding
+- 📏 **Disentangles** document length from evidence position
+- 🌍 **310 datasets** · **10 languages** · **31 domains**
+- 🔍 **Diagnoses position bias** (primacy and recency) in information retrieval
+- 🧪 **Supports gradient-based saliency analysis** for investigating internal mechanisms
+
+## Resources
+
 - Dataset: https://huggingface.co/datasets/infgrad/PosIR-Benchmark-v1
-- Paper: coming soon
-- Leaderboard: coming soon
+- Paper: Coming soon (arXiv preprint in preparation)
+- Leaderboard: Coming soon — contributions welcome!
+
+
 
 # Abstract
 While dense retrieval models have achieved remarkable success, rigorous evaluation of their sensitivity to the position of relevant information (i.e., position bias) remains largely unexplored. Existing benchmarks typically employ position-agnostic relevance labels, conflating the challenge of processing long contexts with the bias against specific evidence locations. To address this challenge, we introduce PosIR (Position-Aware Information Retrieval), a comprehensive benchmark designed to diagnose position bias in diverse retrieval scenarios. PosIR comprises 310 datasets spanning 10 languages and 31 domains, constructed through a rigorous pipeline that ties relevance to precise reference spans, enabling the strict disentanglement of document length from information position. Extensive experiments with 10 state-of-the-art embedding models reveal that: (1) Performance on PosIR in long-context settings correlates poorly with the MMTEB benchmark, exposing limitations in current short-text benchmarks; (2) Position bias is pervasive and intensifies with document length, with most models exhibiting primacy bias while certain models show unexpected recency bias; (3) Gradient-based saliency analysis further uncovers the distinct internal attention mechanisms driving these positional preferences. In summary, PosIR serves as a valuable diagnostic framework to foster the development of position-robust retrieval systems.
@@ -38,19 +54,19 @@ uv pip install einops
     ```sh
     bash eval.sh
     ```
-    Metrics will be written to a new directory under `evaluation_results/`, e.g., `evaluation_results/Qwen3-Embedding-8B`.
+    Detailed evaluation results for each domain will be written to a new directory under `evaluation_results/model_name/language_mode/`, e.g., `evaluation_results/Qwen3-Embedding-8B/fra-eng/accommodation_catering_hotel.json`. "fra-eng" means the retrieval is performed in the French-English language mode.
 
-3) Aggregate metrics:
+3) Aggregate results for 31 domains:
     ```sh
-    python agg_result.py
+    python agg_result.py --model_name Qwen3-Embedding-8B
     ```
     Aggregated results are saved as JSON, e.g., `evaluation_results/Qwen3-Embedding-8B/Qwen3-Embedding-8B.json`.
-4) Compute NDCG and PSI metrics:
+4) Compute NDCG and PSI metrics (all models):
     ```sh
     python ndcg_PSI_analysis.py
     ```
-    Global summaries are stored in `evaluation_results/all_eval_metrics.json`.
-5) (Optional) Visualize results:
+    Macro-weighted NDCG and PSI metrics across 31 domains are stored in `evaluation_results/all_eval_metrics.json`.
+5) (Optional) Visualize results (all models):
     ```sh
     python draw_fig.py
     ```
