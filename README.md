@@ -39,7 +39,7 @@ uv pip install scikit-learn
 uv pip install pandas
 uv pip install pytrec_eval
 uv pip install psutil
-uv pip install --no-build-isolation flash-attn
+uv pip install seaborn
 uv pip install datasets
 uv pip install einops
 
@@ -61,12 +61,12 @@ uv pip install einops
     python agg_result.py --model_name Qwen3-Embedding-8B
     ```
     Aggregated results are saved as JSON, e.g., `evaluation_results/Qwen3-Embedding-8B/Qwen3-Embedding-8B.json`.
-4) Compute NDCG and PSI metrics (all models):
+4) Compute NDCG and PSI metrics:
     ```sh
-    python ndcg_PSI_analysis.py
+    python ndcg_PSI_analysis.py --model_name Qwen3-Embedding-8B
     ```
-    Macro-weighted NDCG and PSI metrics across 31 domains are stored in `evaluation_results/all_eval_metrics.json`.
-5) (Optional) Visualize results (all models):
+    Macro-weighted NDCG and PSI metrics across 31 domains are stored in `evaluation_results/Qwen3-Embedding-8B_eval_metrics.json`.
+5) (Optional) Visualize results for all evaluated models:
     ```sh
     python draw_fig.py
     ```

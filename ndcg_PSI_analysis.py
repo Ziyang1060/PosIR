@@ -4,21 +4,26 @@ import pandas as pd
 import numpy as np
 from scipy.stats import linregress, pearsonr, spearmanr, kendalltau
 from tqdm import tqdm
+import argparse
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--model_name", type=str, default="all", help="Name of the model to analyze")
+args = parser.parse_args()
 
 all_info = {}
-json_files = [
-    "evaluation_results/bge-m3/bge-m3.json",
-    "evaluation_results/gte-multilingual-base/gte-multilingual-base.json",
-    "evaluation_results/inf-retriever-v1-1.5b/inf-retriever-v1-1.5b.json",
-    "evaluation_results/inf-retriever-v1/inf-retriever-v1.json",
-    "evaluation_results/KaLM-Embedding-Gemma3-12B-2511/KaLM-Embedding-Gemma3-12B-2511.json",
-    "evaluation_results/NV-Embed-v2/NV-Embed-v2.json",
-    "evaluation_results/llama-embed-nemotron-8b/llama-embed-nemotron-8b.json",
-    "evaluation_results/Qwen3-Embedding-0.6B/Qwen3-Embedding-0.6B.json",
-    "evaluation_results/Qwen3-Embedding-4B/Qwen3-Embedding-4B.json",
-    "evaluation_results/Qwen3-Embedding-8B/Qwen3-Embedding-8B.json",
-]
+json_files = [f"evaluation_results/{args.model_name}/{args.model_name}.json",]
+# json_files = [
+#     "evaluation_results/bge-m3/bge-m3.json",
+#     "evaluation_results/gte-multilingual-base/gte-multilingual-base.json",
+#     "evaluation_results/inf-retriever-v1-1.5b/inf-retriever-v1-1.5b.json",
+#     "evaluation_results/inf-retriever-v1/inf-retriever-v1.json",
+#     "evaluation_results/KaLM-Embedding-Gemma3-12B-2511/KaLM-Embedding-Gemma3-12B-2511.json",
+#     "evaluation_results/NV-Embed-v2/NV-Embed-v2.json",
+#     "evaluation_results/llama-embed-nemotron-8b/llama-embed-nemotron-8b.json",
+#     "evaluation_results/Qwen3-Embedding-0.6B/Qwen3-Embedding-0.6B.json",
+#     "evaluation_results/Qwen3-Embedding-4B/Qwen3-Embedding-4B.json",
+#     "evaluation_results/Qwen3-Embedding-8B/Qwen3-Embedding-8B.json",
+# ]
 
 for json_file in tqdm(json_files):
     with open(json_file, "r", encoding="utf-8") as f:
@@ -126,5 +131,5 @@ for json_file in tqdm(json_files):
             "PSI(Q4)": float(results["Q4"]["PSI"]),
         }
 
-with open("all_eval_metrics.json", "w") as f:
+with open(f"evaluation_results/{args.model_name}_eval_metrics.json", "w") as f:
     f.write(json.dumps(all_info, ensure_ascii=False, indent=4))
