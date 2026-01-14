@@ -15,7 +15,7 @@
 ## Resources
 
 - Dataset: https://huggingface.co/datasets/infgrad/PosIR-Benchmark-v1
-- Paper: Coming soon (arXiv preprint in preparation)
+- Paper: https://arxiv.org/abs/2601.08363
 - Leaderboard: Coming soon — contributions welcome!
 
 
