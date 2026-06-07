@@ -1,6 +1,6 @@
-# PosIR: Position-Aware Heterogeneous Information Retrieval Benchmark
+# PosIR: A Multilingual Benchmark for Diagnosing Position Bias in Information Retrieval
 
-> A large-scale heterogeneous benchmark for diagnosing position bias in retrieval models.
+> An information retrieval benchmark designed to diagnose position bias across multilingual and cross-lingual retrieval.
 
 # Overview
 
@@ -15,17 +15,21 @@
 ## Resources
 
 - Dataset: https://huggingface.co/datasets/infgrad/PosIR-Benchmark-v1
-- Paper: https://arxiv.org/abs/2601.08363
-- Leaderboard: Coming soon — contributions welcome!
+- Supplementary material: [Supplementary Material](docs/Supplementary_Material.pdf)
+- Arxiv Paper: https://arxiv.org/abs/2601.08363
 
 
 
 # Abstract
-While dense retrieval models have achieved remarkable success, rigorous evaluation of their sensitivity to the position of relevant information (i.e., position bias) remains largely unexplored. Existing benchmarks typically employ position-agnostic relevance labels, conflating the challenge of processing long contexts with the bias against specific evidence locations. To address this challenge, we introduce PosIR (Position-Aware Information Retrieval), a comprehensive benchmark designed to diagnose position bias in diverse retrieval scenarios. PosIR comprises 310 datasets spanning 10 languages and 31 domains, constructed through a rigorous pipeline that ties relevance to precise reference spans, enabling the strict disentanglement of document length from information position. Extensive experiments with 10 state-of-the-art embedding models reveal that: (1) Performance on PosIR in long-context settings correlates poorly with the MMTEB benchmark, exposing limitations in current short-text benchmarks; (2) Position bias is pervasive and intensifies with document length, with most models exhibiting primacy bias while certain models show unexpected recency bias; (3) Gradient-based saliency analysis further uncovers the distinct internal attention mechanisms driving these positional preferences. In summary, PosIR serves as a valuable diagnostic framework to foster the development of position-robust retrieval systems.
+Position bias—the systematic effect of where key information is located on retrieval effectiveness—is a critical concern in information retrieval. Although recent studies have identified such bias in dense retrievers, existing analyses focus predominantly on monolingual English, fail to disentangle document length from information position, and lack a standardized framework for controlled evaluation. To address these limitations, we introduce PosIR, a benchmark to systematically diagnose position bias across diverse retrieval scenarios, comprising 310 language–domain dataset combinations spanning 10 languages and 31 domains. Each query is paired with a positive document, a localized reference span, and positional metadata, enabling controlled analysis of retrieval quality across evidence locations and length bins. PosIR provides a complete data generation pipeline with quality-control filtering, along with baseline evaluation scripts. Experiments with 10 widely-used dense retrievers reveal that position bias is pervasive in both multilingual and cross-lingual retrieval, and that it intensifies as documents grow longer. PosIR serves as a foundational resource to advance the development of position-robust retrieval systems.
 
 # Usage
 
 ## Installation
+
+There are two ways to evaluate the retrieval models:
+
+### sentence-transformers
 We recommend managing the environment with `uv` and Python 3.12. Different retrieval models may require specific library versions; see the notes below for NV-Embed-v2.
 
 ```sh
@@ -48,11 +52,17 @@ uv pip install einops
 # uv pip install sentence_transformers==3.2.1
 ```
 
+### vLLM
+
+**We strongly recommend use [vLLM](https://docs.vllm.ai/en/stable/getting_started/installation) to deploy the embedding models for better efficiency in evaluation.**
+
+
 ## Evaluation Pipeline
 1) Download the dataset into `PosIR-Benchmark-v1/`.
 2) In `eval.sh`, set `target_query_allowed_langs`, `target_corpus_language`, and `MODEL_PATH` to run monolingual or cross-lingual retrieval. Then run:
     ```sh
-    bash eval.sh
+    bash eval.sh # for sentence-transformers
+    bash eval_vllm.sh # for vLLM
     ```
     Detailed evaluation results for each domain will be written to a new directory under `evaluation_results/model_name/language_mode/`, e.g., `evaluation_results/Qwen3-Embedding-8B/fra-eng/accommodation_catering_hotel.json`. "fra-eng" means the retrieval is performed in the French-English language mode.
 
