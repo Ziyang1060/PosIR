@@ -21,6 +21,7 @@ logger = logging.getLogger(__name__)
 
 class RetrievalEvaluator:
     def __init__(self, model_path: str):
+        self.model_path = model_path
         self.model = SentenceTransformer(
             model_name_or_path=model_path, 
             model_kwargs={
@@ -63,9 +64,8 @@ class RetrievalEvaluator:
             Embeddings, shape (n_texts, embedding_dim)
         """
         logger.info(f"Encoding {len(texts)} texts with batch size {batch_size}")
-        task_instruction = "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery: "
-
-        if is_query:
+        if is_query and "qwen3-embedding" in self.model_path.lower():
+            task_instruction = "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery: "
             texts = [task_instruction + t for t in texts]
 
         embeddings = self.model.encode_multi_process(
