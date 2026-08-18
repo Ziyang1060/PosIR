@@ -60,23 +60,24 @@ uv pip install einops
 ## Evaluation Pipeline
 1) Download the dataset into `PosIR-Benchmark-v1/`.
 2) In `eval.sh`, set `target_query_allowed_langs`, `target_corpus_language`, and `MODEL_PATH` to run monolingual or cross-lingual retrieval. Then run:
+   > **Query instruction:** `eval.py` and `eval_vllm.py` automatically prepend the Qwen3-Embedding retrieval instruction to queries only for Qwen3-Embedding models. For other models, follow the model's official query formatting or instruction if required.
     ```sh
     bash eval.sh # for sentence-transformers
     bash eval_vllm.sh # for vLLM
     ```
     Detailed evaluation results for each domain will be written to a new directory under `evaluation_results/model_name/language_mode/`, e.g., `evaluation_results/Qwen3-Embedding-8B/fra-eng/accommodation_catering_hotel.json`. "fra-eng" means the retrieval is performed in the French-English language mode.
 
-3) Aggregate results for 31 domains:
+4) Aggregate results for 31 domains:
     ```sh
     python agg_result.py --model_name Qwen3-Embedding-8B
     ```
     Aggregated results are saved as JSON, e.g., `evaluation_results/Qwen3-Embedding-8B/Qwen3-Embedding-8B.json`.
-4) Compute NDCG and PSI metrics:
+5) Compute NDCG and PSI metrics:
     ```sh
     python ndcg_PSI_analysis.py --model_name Qwen3-Embedding-8B
     ```
     Macro-weighted NDCG and PSI metrics across 31 domains are stored in `evaluation_results/Qwen3-Embedding-8B_eval_metrics.json`.
-5) (Optional) Visualize results for all evaluated models:
+6) (Optional) Visualize results for all evaluated models:
     ```sh
     python draw_fig.py
     ```
