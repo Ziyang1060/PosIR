@@ -128,14 +128,14 @@ class RetrievalEvaluator:
         Args:
             texts: Texts to encode, list of strings
             batch_size: API request batch size, default 32
-            is_query: Whether to prepend task instruction
+            is_query: Whether the input texts are queries
 
         Returns:
             Embeddings, shape (n_texts, embedding_dim)
         """
         logger.info(f"Encoding {len(texts)} texts via API with batch size {batch_size}")
 
-        if is_query:
+        if is_query and "qwen3-embedding" in self.model_path.lower():
             task_instruction = "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery: "
             texts = [task_instruction + t for t in texts]
 
